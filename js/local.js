@@ -1,28 +1,41 @@
-$('document').ready(function() {
-    /*
-        $('#open_mod').click(function() {
-            $('#sin_form').removeClass("d-none");
-            $('#sup_form').addClass("d-none");
-            $('#sin').addClass("d-none");
-            $('#sup').removeClass("d-none");
-            $('#exampleModalLabel').text("Login to LeafBerri");
-        });
-        $('#sup').click(function() {
-            $('#sin_form').addClass("d-none");
-            $('#sup_form').removeClass("d-none");
-            $('#sin').removeClass("d-none");
-            $('#sup').addClass("d-none");
-            $('#exampleModalLabel').text("SignUp with LeafBerri");
+var form1 = document.getElementById("form1");
+var respo = document.getElementById("response");
+var xmlhttp = new XMLHttpRequest();
 
-        });
-        $('#sin').click(function() {
-            $('#sin_form').removeClass("d-none");
-            $('#sup_form').addClass("d-none");
-            $('#sin').addClass("d-none");
-            $('#sup').removeClass("d-none");
-            $('#exampleModalLabel').text("Login to LeafBerri");
+form1.addEventListener('submit',
+    function tedd(e) {
 
-        });
-    */
+        e.preventDefault();
+        var formData = new FormData(form1);
 
-});
+
+        if (formData.get("Email1") !== "" && formData.get("Password1") !== "") {
+            xmlhttp.open('POST', 'http://localhost/Leafberri/php/leafberri.php', true);
+
+
+            xmlhttp.onload = function(oEvent) {
+                if (xmlhttp.status == 200) {
+
+                    if (xmlhttp.response == "No such data") {
+                        respo.innerHTML = xmlhttp.responseText;
+                    } else {
+
+                        window.location.assign('http://localhost/Leafberri/php/admin.php/?user_email=' + xmlhttp.responseText);
+                    }
+
+
+                } else {
+                    console.log("Error " + xmlhttp.status + " occurred when trying to upload your file.<br \/>");
+                }
+            };
+
+            xmlhttp.send(formData);
+
+        } else {
+
+            respo.innerHTML = "There is an empty field";
+        }
+
+
+    }
+);
